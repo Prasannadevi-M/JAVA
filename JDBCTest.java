@@ -1,5 +1,29 @@
+TC1:
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+public class JDBCTest {
+   public static void main(String[] args) {
+       String url = "jdbc:mysql://localhost:3306/student?useSSL=false&serverTimezone=UTC";
+       String user = "root";
+       String password = "12345";
+       System.out.println("prasannadevi M");
+       System.out.println("2117240070228");
+       try {
+           Class.forName("com.mysql.cj.jdbc.Driver");
+           Connection conn = DriverManager.getConnection(url, user, password);
+           System.out.println("Connected");
+           conn.close();
+       } catch (ClassNotFoundException e) {
+           System.out.println("Driver not found");
+           e.printStackTrace();
+       } catch (SQLException e) {
+           System.out.println("Connection failed: " + e.getMessage());
+       }
+   }
+}
+TC2:
 package com.java.practice;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
