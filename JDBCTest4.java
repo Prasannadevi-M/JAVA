@@ -1,3 +1,71 @@
+
+TC3:
+package com.java.practice;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.ResultSet;
+
+public class JDBCTest {
+    public static void main(String[] args) {
+        // You can switch between valid/invalid credentials for testing
+        String url = "jdbc:mysql://localhost:3306/student?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+        String user = "root";     // change to "wrong_user" for invalid test
+        String password = "1234"; // change to "wrong_pass" for invalid test
+
+        try {
+            // 1. Load MySQL Driver
+            Class.forName("com.mysql.cj.jdbc.Driver");
+
+            // 2. Connect to database
+            Connection conn = DriverManager.getConnection(url, user, password);
+            System.out.println("Connected successfully!");
+
+            // 3. Create Statement
+            Statement stmt = conn.createStatement();
+
+            // 4. Execute query
+            String query = ""; // intentionally empty query
+            if (query.trim().isEmpty()) {
+                System.out.println("No result");
+            } else {
+                ResultSet rs = stmt.executeQuery(query);
+
+                boolean hasRows = false;
+                while (rs.next()) {
+                    hasRows = true;
+                    int id = rs.getInt("id");
+                    String name = rs.getString("name");
+                    int age = rs.getInt("age");
+                    String department = rs.getString("department");
+
+                    System.out.println("ID: " + id + ", Name: " + name + ", Age: " + age + ", Department: " + department);
+                }
+
+                if (!hasRows) {
+                    System.out.println("No result");
+                }
+
+                rs.close();
+            }
+
+            stmt.close();
+            conn.close();
+
+        } catch (ClassNotFoundException e) {
+            System.out.println("MySQL Driver not found!");
+        } catch (SQLException e) {
+            if (e.getMessage().contains("Access denied")) {
+                System.out.println("Access denied: Invalid username or password!");
+            } else {
+                System.out.println("SQL Error: " + e.getMessage());
+            }
+        }
+    }
+}
+
 TC4:
 package com.java.practice;
 import java.sql.Connection;
